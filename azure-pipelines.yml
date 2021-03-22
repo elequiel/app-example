@@ -8,18 +8,11 @@ pool:
 steps:
 - checkout: self
 - task: AzureCLI@2
-  displayName: Login to ACR
   inputs:
     azureSubscription: 'sp-azdevops'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az acr login --name zekecs'
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'sp-azdevops'
-    scriptType: 'batch'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az acr build -t zek/app-sampe:{{.Run.ID}} -r zekecs $(Pipeline.Workspace)/app/'
+    inlineScript: 'az account list -o table'
 - task: Docker@2
   inputs:
     command: 'buildAndPush'
