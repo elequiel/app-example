@@ -3,7 +3,7 @@ trigger:
 - master
 
 pool:
-  vmImage: "windows-latest"
+  vmImage: "ubuntu-latest"
 
 steps:
 - checkout: self
@@ -22,8 +22,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      dir $(Agent.BuildDirectory)
-      dir $(Build.Repository.LocalPath)
+      ls $(Agent.BuildDirectory)
+      ls $(Build.Repository.LocalPath)
     
 - task: Docker@2
   inputs:
