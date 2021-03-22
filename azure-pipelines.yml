@@ -17,6 +17,14 @@ steps:
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
     inlineScript: 'az account list -o table'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      az account list -o table
+      ls $(Pipeline.Workspace)/app
+    
 - task: Docker@2
   inputs:
     command: 'buildAndPush'
