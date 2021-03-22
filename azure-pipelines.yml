@@ -13,7 +13,7 @@ steps:
     script: 'az account list -o table'
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'sp-azdevops'
+    azureSubscription: 'ezequiel-mpn (7641de69-433f-4802-baaf-a4126c027420)'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
     inlineScript: 'az account list -o table'
