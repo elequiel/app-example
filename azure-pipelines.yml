@@ -13,7 +13,7 @@ steps:
     script: 'az account list -o table'
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'ezequiel-mpn (7641de69-433f-4802-baaf-a4126c027420)'
+    azureSubscription: 'sp-azdevops'
     scriptType: 'batch'
     scriptLocation: 'inlineScript'
     inlineScript: 'az account list -o table'
@@ -22,8 +22,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      az account list -o table
-      ls $(Pipeline.Workspace)/app
+      ls $(Agent.BuildDirectory)
+      ls $(Build.Repository.LocalPath)
     
 - task: Docker@2
   inputs:
