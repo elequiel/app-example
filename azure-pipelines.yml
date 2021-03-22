@@ -22,8 +22,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      ls $(Agent.BuildDirectory)
-      ls $(Build.Repository.LocalPath)
+      dir $(Agent.BuildDirectory)
+      dir $(Build.Repository.LocalPath)
     
 - task: Docker@2
   inputs:
