@@ -24,7 +24,3 @@ steps:
   inputs:
     command: 'buildAndPush'
     Dockerfile: '$(Pipeline.Workspace)/app/Dockerfile'
-- task: AzureWebAppContainer@1
-  inputs:
-    azureSubscription: 'sp-azdevops'
-    appName: 'zek'
