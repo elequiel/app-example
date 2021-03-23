@@ -3,35 +3,44 @@ trigger:
 - master
 
 pool:
-  vmImage: "windows-latest"
+  vmImage: "ubuntu-latest"
 
-steps:
-- checkout: self
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: 'az account list -o table'
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: 'sp-azdevops'
-    scriptType: 'batch'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az account list -o table'
+variables:
+- group: az-examples
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      ls $(Agent.BuildDirectory)
-      ls $(Build.Repository.LocalPath)
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      ls $(Agent.BuildDirectory)
-      ls $(Build.Repository.LocalPath)
-    
-- task: Docker@2
-  inputs:
-    command: 'buildAndPush'
-    Dockerfile: '$(Pipeline.Workspace)/app/Dockerfile'
+stages:
+  - stage: dev
+    displayName: "Develop"
+    jobs:
+      - deployment: listFiles
+        displayName: "List files"
+        environment: "azdevops-examples"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - checkout: self
+              - task: Bash@3
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    ls $(Agent.BuildDirectory)
+                    ls $(Build.Repository.LocalPath)
+              - task: AzureCLI@2
+                inputs:
+                  azureSubscription: 'sp-azdevops'
+                  scriptType: 'batch'
+                  scriptLocation: 'inlineScript'
+                  inlineScript: 'az account list -o table'
+
+              - task: PowerShell@2
+                inputs:
+                  targetType: 'inline'
+                  script: |
+                    ls $(Agent.BuildDirectory)
+                    ls $(Build.Repository.LocalPath)
+                  
+              - task: Docker@2
+                inputs:
+                  command: 'buildAndPush'
+                  Dockerfile: '$(Pipeline.Workspace)/app/Dockerfile'
