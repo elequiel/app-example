@@ -21,11 +21,12 @@ stages:
               steps:
               - checkout: self
 
-              - task: Bash@3
+              - task: AzureCLI@2
                 inputs:
-                  targetType: 'inline'
-                  script: |
-                    az group list -o table
+                  azureSubscription: 'sp-azdevops'
+                  scriptType: 'batch'
+                  scriptLocation: 'inlineScript'
+                  inlineScript: 'az group list -o table'
 
               - task: PowerShell@2
                 inputs:
@@ -38,3 +39,4 @@ stages:
                 inputs:
                   command: 'buildAndPush'
                   Dockerfile: '$(Build.Repository.LocalPath)/app/Dockerfile'
+
