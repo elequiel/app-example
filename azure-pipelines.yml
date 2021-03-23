@@ -36,3 +36,10 @@ stages:
                   inlineScript: |
                     az acr build -t app/node-example:{{.Run.ID}} -r zekecs $(Build.Repository.LocalPath)/app
 
+              - task: AzureCLI@2
+                inputs:
+                  azureSubscription: 'sp-azdevops'
+                  scriptType: 'batch'
+                  scriptLocation: 'inlineScript'
+                  inlineScript: |
+                    az acr build -t app/node-example:latest -r zekecs $(Build.Repository.LocalPath)/app
