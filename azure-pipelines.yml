@@ -21,29 +21,18 @@ stages:
               steps:
               - checkout: self
 
-              - task: AzureCLI@2
-                inputs:
-                  azureSubscription: 'sp-azdevops'
-                  scriptType: 'batch'
-                  scriptLocation: 'inlineScript'
-                  inlineScript: 'az group list -o table'
-
               - task: PowerShell@2
                 inputs:
                   targetType: 'inline'
                   script: |
                     ls $(Agent.BuildDirectory)
                     ls $(Build.Repository.LocalPath)
-              - task: DockerInstaller@0
-                inputs:
-                  dockerVersion: '17.09.0-ce'
 
-              - task: PowerShell@2
+              - task: AzureCLI@2
                 inputs:
-                  targetType: 'inline'
-                  script: "docker build -f '$(Build.Repository.LocalPath)/app/Dockerfile' -t zekecs.azurecr.io/app-example:latest ."
-              - task: Docker@2
-                inputs:
-                  command: 'buildAndPush'
-                  Dockerfile: '$(Build.Repository.LocalPath)/app/Dockerfile'
+                  azureSubscription: 'sp-azdevops'
+                  scriptType: 'batch'
+                  scriptLocation: 'inlineScript'
+                  inlineScript: |
+                    az acr build -t app/node-example:{{.Run.ID}} -r zekecs .
 
