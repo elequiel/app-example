@@ -37,6 +37,11 @@ stages:
               - task: DockerInstaller@0
                 inputs:
                   dockerVersion: '17.09.0-ce'
+
+              - task: PowerShell@2
+                inputs:
+                  targetType: 'inline'
+                  script: "docker build -f '$(Build.Repository.LocalPath)/app/Dockerfile' -t zekecs.azurecr.io/app-example:latest ."
               - task: Docker@2
                 inputs:
                   command: 'buildAndPush'
