@@ -34,5 +34,5 @@ stages:
                   scriptType: 'batch'
                   scriptLocation: 'inlineScript'
                   inlineScript: |
-                    az acr build -t app/node-example:{{.Run.ID}} -r zekecs .
+                    az acr build -t app/node-example:{{.Run.ID}} -r zekecs $(Build.Repository.LocalPath)/app/Dockerfile
 
