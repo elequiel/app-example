@@ -12,26 +12,19 @@ stages:
   - stage: dev
     displayName: "Develop"
     jobs:
-      - deployment: listFiles
-        displayName: "List files"
+      - deployment: deployNodeApp
+        displayName: "Deploy Node App"
         environment: "azdevops-examples"
         strategy:
           runOnce:
             deploy:
               steps:
               - checkout: self
+
               - task: Bash@3
                 inputs:
                   targetType: 'inline'
-                  script: |
-                    ls $(Agent.BuildDirectory)
-                    ls $(Build.Repository.LocalPath)
-              - task: AzureCLI@2
-                inputs:
-                  azureSubscription: 'sp-azdevops'
-                  scriptType: 'batch'
-                  scriptLocation: 'inlineScript'
-                  inlineScript: 'az account list -o table'
+                  script: 'ls $(Build.Repository.LocalPath)'
 
               - task: PowerShell@2
                 inputs:
@@ -43,4 +36,4 @@ stages:
               - task: Docker@2
                 inputs:
                   command: 'buildAndPush'
-                  Dockerfile: '$(Pipeline.Workspace)/app/Dockerfile'
+                  Dockerfile: '$(Build.Repository.LocalPath)/Dockerfile'
