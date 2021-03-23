@@ -34,7 +34,9 @@ stages:
                   script: |
                     ls $(Agent.BuildDirectory)
                     ls $(Build.Repository.LocalPath)
-                  
+              - task: DockerInstaller@0
+                inputs:
+                  dockerVersion: '17.09.0-ce'
               - task: Docker@2
                 inputs:
                   command: 'buildAndPush'
